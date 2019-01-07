@@ -1,0 +1,21 @@
+- connection: local
+  hosts: localhost
+  roles:
+    - avinetworks.avisdk
+  vars:
+    vtype: CLOUD_LINUXSERVER
+  tasks:
+  - include_tasks: library/linux_write/tasks/linux_write.yml
+    name: "{{ 'Deploy Baremetal Write Cloud: ' + build_version }}"
+    when: vtype in vtype_list
+
+- hosts: "{{ se_mgmt_ip }}"
+  vars:
+    ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
+    ansible_ssh_user: root
+    ctrl_ssh_key: "{{ hostvars['localhost']['clouduser_info']['obj']['results'][0]['public_key'] }}"
+  tasks:
+  - debug:
+      var: ansible_ssh_host
+  - name: "{{ 'Copy SSH key to server created' }}"
+    include_tasks: library/linux_write/tasks/ssh_keys.yml

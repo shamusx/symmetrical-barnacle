@@ -1,0 +1,23 @@
+- systemd:
+    enabled: yes
+    state: started
+    name: docker
+  name: "Verify Docker is started and enabled"
+- file:
+    path: ~/.ssh/
+    state: directory
+  name: "Create .ssh directory if not already exists"
+- stat:
+    path: ~/.ssh/authorized_keys
+  register: stat_result
+  name: "Check that authorized_keys file exists"
+- file:
+    path: ~/.ssh/authorized_keys
+    state: touch
+  name: "Create authorized keys file"
+  when: stat_result.stat.exists == false
+- lineinfile:
+    path: ~/.ssh/authorized_keys
+    line: "{{ ctrl_ssh_key }}"
+    insertafter: EOF
+  name: "Add sshkey for Controller to linux SE"

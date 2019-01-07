@@ -1,0 +1,26 @@
+- avi_useraccount:
+    controller: "{{ controller_mgmt_ip }}"
+    username: "{{ lookup('env', 'AVI_USERNAME') }}"
+    password: "{{ lookup('env', 'AVI_PASSWORD') }}"
+    old_password: "{{ lookup('env', 'AVI_OLDPASSWORD') }}"
+  name: "Change Default Password"
+
+- avi_systemconfiguration:
+    avi_credentials: "{{ avi_credentials }}"
+    dns_configuration:
+      server_list:
+        - addr: 8.8.8.8
+          type: V4
+        - addr: 8.8.4.4
+          type: V4
+    ntp_configuration:
+      ntp_server_list:
+        - addr: 0.pool.ntp.org
+          type: DNS
+        - addr: 1.pool.ntp.org
+          type: DNS
+        - addr: 2.pool.ntp.org
+          type: DNS
+        - addr: 3.pool.ntp.org
+          type: DNS
+  name: Basic system configuration

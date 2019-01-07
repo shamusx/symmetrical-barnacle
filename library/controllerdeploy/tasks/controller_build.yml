@@ -1,0 +1,28 @@
+- debug:
+    var: build_version
+- vcenter_folder:
+    hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+    username: "{{ lookup('env', 'VMWARE_USER') }}"
+    password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+    datacenter: "{{ defaults.datacenter}}"
+    folder_name: "{{ build_version }}"
+    folder_type: vm
+    state: present
+    parent_folder: "{{ vmware_folder }}"
+  name: "{{ 'Create a VM folder: ' + build_version }}"
+- deploy_controller:
+    ovftool_path: /usr/bin
+    vcenter_host: "{{ lookup('env', 'VMWARE_HOST') }}"
+    vcenter_user: "{{ lookup('env', 'VMWARE_USER') }}"
+    vcenter_password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+    con_datacenter: "{{ defaults.datacenter}}"
+    con_cluster: "{{ defaults.cluster }}"
+    con_mgmt_network: "{{ defaults.mgmt_network }}"
+    con_ova_path: "{{ ova_path + 'controller.ova' }}"
+    con_vm_name: "{{ 'pslab-ctrl-' + build_version}}"
+    con_power_on: true
+    con_vcenter_folder: "{{ vmware_folder + '/' + build_version }}"
+    con_mgmt_ip: "{{ controller_mgmt_ip }}"
+    con_default_gw: "{{ defaults.mgmt_gw }}"
+    con_mgmt_mask: "{{ defaults.mgmt_mask }}"
+  name: "{{ 'Deploy Avi Controller Version: ' + build_version }}"

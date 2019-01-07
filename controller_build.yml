@@ -1,0 +1,10 @@
+- connection: local
+  hosts: localhost
+  roles:
+    - avinetworks.avisdk
+    - avinetworks.avicontroller_vmware
+  tasks:
+  - include_tasks: library/controllerdeploy/tasks/controller_build.yml
+    name: Deploy AviControllers VMWare
+  - include_tasks: library/controllerdeploy/tasks/controller_init.yml
+    name: Configure default settings on controller

@@ -1,0 +1,4 @@
+- src: avinetworks.avisdk
+- src: avinetworks.aviconfig
+- src: avinetworks.docker
+- src: avinetworks.avicontroller

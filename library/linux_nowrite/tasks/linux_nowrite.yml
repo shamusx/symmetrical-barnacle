@@ -1,0 +1,12 @@
+- include_tasks: ../../shared_plays/tasks/build_server.yml
+- add_host:
+    name: "{{ se_mgmt_ip }}"
+  name: Add Host to in-memory inventory
+- avi_cloud:
+    avi_credentials: "{{ avi_credentials }}"
+    name: "{{ cloud_name }}"
+    vtype: CLOUD_NONE
+    api_version: "{{ avi_api_version }}"
+    license_type: LIC_CORES
+    tenant_ref: '/api/tenant/?name=admin'
+  name: Create Cloud

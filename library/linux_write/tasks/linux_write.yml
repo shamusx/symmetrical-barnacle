@@ -1,0 +1,35 @@
+- include_tasks: ../../shared_plays/tasks/build_server.yml
+- add_host:
+    name: "{{ se_mgmt_ip }}"
+  name: Add Host to in-memory inventory
+- avi_cloudconnectoruser:
+    avi_credentials: "{{ avi_credentials }}"
+    name: root
+  name: Create user for SE Linux Cloud
+- avi_cloud:
+    avi_credentials: "{{ avi_credentials }}"
+    name: "{{ 'PSLAB_Baremetal_Write' }}"
+    vtype: CLOUD_LINUXSERVER
+    api_version: "{{ avi_api_version }}"
+    license_type: LIC_CORES
+    tenant_ref: '/api/tenant/?name=admin'
+    linuxserver_configuration:
+      ssh_user_ref: "/api/cloudconnectoruser/?name=root"
+      hosts:
+        - host_attr:
+          - attr_key: "DPDK"
+            attr_val: "No"
+          - attr_key: "SE_INBAND_MGMT"
+            attr_val: "False"
+          host_ip:
+            type: V4
+            addr: "{{ se_mgmt_ip }}"
+  name: Create a LinuxServer Cloud with Write
+- avi_api_session:
+    avi_credentials: "{{ avi_credentials }}"
+    http_method: get
+    path: cloudconnectoruser
+    params:
+      name: root
+  name: "Obtain root key to copy onto SE"
+  register: clouduser_info

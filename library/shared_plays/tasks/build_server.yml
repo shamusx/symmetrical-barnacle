@@ -1,0 +1,24 @@
+---
+- vmware_guest:
+    hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+    username: "{{ lookup('env', 'VMWARE_USER') }}"
+    password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+    validate_certs: False
+    name: "{{ server_name }}"
+    template: "{{ template_name }}"
+    datacenter: "{{ defaults.datacenter }}"
+    cluster: "{{ defaults.cluster }}"
+    folder: "{{ vmware_folder + '/' + build_version }}"
+    state: poweredon
+    hardware:
+      memory_mb: 4096
+      num_cpus: 2
+    customization:
+      autologon: True
+      dns_servers:
+      - "{{ lab_dns_server }}"
+      domain: "{{ lab_domain_name }}"
+      password: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
+    networks: "{{ vm_networks }}"
+    wait_for_ip_address: yes
+  name: "{{ 'Building Server with Servername: ' + server_name }}"

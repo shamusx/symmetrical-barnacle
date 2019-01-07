@@ -1,0 +1,34 @@
+- connection: local
+  hosts: localhost
+  roles:
+    - avinetworks.avisdk
+  vars:
+    vtype: CLOUD_NONE
+  tasks:
+  - include_tasks: library/linux_nowrite/tasks/linux_nowrite.yml
+    name: "{{ 'Deploy No Write Cloud: ' + build_version }}"
+    when: vtype in vtype_list
+
+- hosts: "{{ se_mgmt_ip }}"
+  vars:
+    ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
+    ansible_ssh_user: root
+  pre_tasks:
+    - get_url:
+        url: "{{ ova_path + 'se_docker.tgz'}}"
+        dest: "/tmp/"
+      name: "{{ 'Download se_docker.tgz to install SE' }}"
+    - systemd:
+        enabled: yes
+        state: started
+        name: docker
+      name: "Verify Docker is started and enabled"
+  roles:
+    - role: avinetworks.avise
+      se_master_ctl_ip: "{{ controller_mgmt_ip }}"
+      se_master_ctl_username: "{{ lookup('env', 'ANSIBLE_NET_USERNAME') }}"
+      se_master_ctl_password: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
+      se_inband_mgmt: false
+      se_cloud_name: "{{ cloud_name }}"
+      se_package_deploy: true
+      se_package_dest: '/tmp/se_docker.tgz'
