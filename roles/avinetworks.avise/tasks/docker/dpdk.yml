@@ -1,0 +1,36 @@
+---
+# se_dpdk tasks file for avinetworks.avise
+- name: Avi SE | DPDK | Install PCI Utils
+  package: name=pciutils
+
+- name: Avi SE | DPDK | Set facts
+  set_fact:
+    se_old_dpdk: "{{ se_version|version_compare('16.3.0', '<') }}"
+    se_new_dpdk: "{{ se_version|version_compare('16.3.0', '>=') }}"
+    se_klm_ver: "{{ ansible_kernel | regex_replace('-.*', '') }}"
+
+- block:
+    - name: Avi SE | DPDK | < 16.3 | Configure DPDK Pre Parameters
+      set_fact:
+        se_dpdk_pre: >
+          rmmod igb_uio; rmmod rte_kni; modprobe uio; insmod /opt/avi/kmod/igb_uio.ko;
+          insmod /opt/avi/kmod/rte_kni.ko; mkdir -p /mnt/huge; umount /mnt/huge; rm /mnt/huge/*;
+          mount -t hugetlbfs nodev /mnt/huge
+      when: se_old_dpdk
+    - name: Avi SE | DPDK | >= 16.3 | Configure DPDK Pre Parameters
+      set_fact:
+        se_dpdk_pre: >
+          modprobe uio;
+          mkdir -p /mnt/huge; umount /mnt/huge; rm /mnt/huge/*; mount -t hugetlbfs nodev /mnt/huge
+      when: se_new_dpdk
+  when: se_dpdk_pre is undefined
+
+- name: Avi SE | DPDK | Configure DPDK Post Parameters
+  set_fact:
+    se_dpdk_post: "rmmod igb_uio; rmmod rte_kni; umount /mnt/huge"
+  when: se_dpdk_post is undefined
+
+- name: Avi SE | DPDK | Check for supported network interface cards"
+  shell: lspci | grep "Ethernet" | grep "Intel Corporation" | egrep -i "{{ se_dpdk_supported_nics }}"
+  register: se_dpdk_test_array
+  changed_when: false

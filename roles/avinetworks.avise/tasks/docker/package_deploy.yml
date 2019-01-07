@@ -1,0 +1,19 @@
+---
+# This set of tasks is only used when se_package_deploy is true
+
+- name: Avi SE | File Check | Verify if source image exists
+  stat:
+    path: "{{ se_package_source }}"
+  register: stat_result
+
+- name: Avi SE | Docker | Deploy the image from the package
+  copy: src={{ se_package_source }} dest={{ se_package_dest }}
+  when: stat_result.stat.exists == True
+
+- name: Avi SE | Docker | Load the image from the package
+  shell: "docker load -q -i {{ se_package_dest }} | awk -F':' '{print $3}'"
+  register: se_load_docker_image
+
+- set_fact:
+    se_version: "{{ se_load_docker_image.stdout }}"
+    se_image: "avinetworks/se:{{ se_load_docker_image.stdout }}"

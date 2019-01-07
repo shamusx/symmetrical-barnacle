@@ -1,0 +1,33 @@
+---
+galaxy_info:
+  role_name: avise
+  author: Avi Networks
+  description: Deploy's the AVI Vantage Service Engine
+  company: Avi Networks
+  issue_tracker_url: https://github.com/avinetworks/ansible-role-avise/issues
+  license: Apache 2.0
+  min_ansible_version: 2.4.0
+  github_branch: master
+  platforms:
+    - name: EL
+      versions:
+        - 6
+        - 7
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+        - xenial
+  galaxy_tags:
+    - avi
+    - serviceengine
+    - loadbalancer
+    - service
+    - engine
+    - avinetworks
+    - avise
+    - centos
+    - ubuntu
+    - mesos
+dependencies:
+  - { role: avinetworks.avisdk }
