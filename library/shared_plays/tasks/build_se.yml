@@ -8,20 +8,17 @@
     template: "{{ template_name }}"
     datacenter: "{{ defaults.datacenter }}"
     cluster: "{{ defaults.cluster }}"
-    folder: "{{ vmware_folder }}"
+    folder: "{{ vmware_folder + '/' + build_version }}"
     state: poweredon
+    hardware:
+      memory_mb: 4096
+      num_cpus: 2
     customization:
       autologon: True
       dns_servers:
       - "{{ lab_dns_server }}"
       domain: "{{ lab_domain_name }}"
       password: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
-    networks:
-     - name: "{{ portgroup }}"
-       ip: "{{ ipvar | ipaddr('address') }}"
-       netmask: "{{ ipvar | ipaddr('netmask') }}"
-       gateway: "{{ ipvar | ipaddr('first_usable') }}"
-       type: static
-       start_connected: True
+    networks: "{{ vm_networks }}"
     wait_for_ip_address: yes
-  name: "{{ 'Building Server with Servername: ' + server_name }}"
+  name: "{{ 'Building SE: ' + server_name }}"

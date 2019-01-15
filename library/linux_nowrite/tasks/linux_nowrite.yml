@@ -1,4 +1,4 @@
-- include_tasks: ../../shared_plays/tasks/build_server.yml
+- include_tasks: ../../shared_plays/tasks/build_se.yml
 - add_host:
     name: "{{ se_mgmt_ip }}"
   name: Add Host to in-memory inventory
