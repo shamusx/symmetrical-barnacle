@@ -1,0 +1,5 @@
+- connection: local
+  hosts: localhost
+  tasks:
+  - include_tasks: library/shared_plays/tasks/build_server.yml
+    name: Deploy New Server
