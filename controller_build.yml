@@ -4,6 +4,7 @@
     - avinetworks.avisdk
     - avinetworks.avicontroller_vmware
   tasks:
+  - include_vars: "library/controllerdeploy/defaults/defaults.yml"
   - include_tasks: library/controllerdeploy/tasks/controller_build.yml
     with_sequence:  count={{ deploy_controllers }}
     name: Deploy AviControllers VMWare
