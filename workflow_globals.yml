@@ -3,7 +3,8 @@
   tasks:
   - set_stats:
       data:
+        controller_mgmt_ip: "{{ controller_mgmt | ipaddr('address') }}"
         build_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+\\/+?', '\\1') }}"
         avi_api_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+-.*\\/+?', '\\1') }}"
-        last_octet: "{{ controller_mgmt_ip.split('.')[3:4] | join('.') }}"
+        last_octet: "{{ controller_mgmt.split('.')[3:4] | join('.') }}"
         loop_controller: 0

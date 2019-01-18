@@ -1,5 +1,5 @@
 - avi_useraccount:
-    controller: "{{ controller_mgmt_ip }}"
+    controller: "{{ controller_mgmt_ip | ipaddr('address') }}"
     username: "{{ lookup('env', 'AVI_USERNAME') }}"
     password: "{{ lookup('env', 'AVI_PASSWORD') }}"
     old_password: "{{ lookup('env', 'AVI_OLDPASSWORD') }}"
