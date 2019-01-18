@@ -20,7 +20,7 @@
     con_vm_name: "{{ vmware_folder + '-' + build_version + '-' + loop_controller|string }}"
     con_power_on: true
     con_vcenter_folder: "{{ vmware_folder + '/' + build_version }}"
-    con_mgmt_ip: "{{ controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller) }}"
+    con_mgmt_ip: "{{ controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller|int) }}"
     con_default_gw: "{{ controller_mgmt_ip | ipaddr('first_usable') }}"
     con_mgmt_mask: "{{ controller_mgmt_ip | ipaddr('netmask') }}"
   name: "{{ 'Deploy Avi Controller Version: ' + build_version }}"
