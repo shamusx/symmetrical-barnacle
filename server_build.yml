@@ -2,4 +2,4 @@
   hosts: localhost
   tasks:
   - include_tasks: library/shared_plays/tasks/build_server.yml
-    name: Deploy New Server
+    name: "{{ 'Deploy New Server: ' + server_name }}"
