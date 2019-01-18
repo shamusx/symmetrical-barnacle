@@ -17,11 +17,11 @@
     con_cluster: "{{ defaults.cluster }}"
     con_mgmt_network: "{{ defaults.mgmt_network }}"
     con_ova_path: "{{ ova_path + 'controller.ova' }}"
-    con_vm_name: "{{ vmware_folder + '-' + build_version + '-' + loop_controller }}"
+    con_vm_name: "{{ vmware_folder + '-' + build_version + '-' + loop_controller|string }}"
     con_power_on: true
     con_vcenter_folder: "{{ vmware_folder + '/' + build_version }}"
-    con_mgmt_ip: "{{ controller_mgmt_ip }}"
-    con_default_gw: "{{ defaults.mgmt_gw }}"
-    con_mgmt_mask: "{{ defaults.mgmt_mask }}"
+    con_mgmt_ip: "{{ controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller) }}"
+    con_default_gw: "{{ controller_mgmt_ip | ipaddr('first_usable') }}"
+    con_mgmt_mask: "{{ controller_mgmt_ip | ipaddr('netmask') }}"
   name: "{{ 'Deploy Avi Controller Version: ' + build_version }}"
 - set_fact: loop_controller={{ loop_controller | int + 1 }}
