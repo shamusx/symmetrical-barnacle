@@ -1,0 +1,15 @@
+controller: "{{ controller_mgmt }}"
+username: "{{ lookup('env', 'ANSIBLE_NET_USERNAME') }}"
+password: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
+api_version: "{{ avi_api_version }}"
+virtual_ip:
+  type: V4
+  addr: {{ controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller|int) }}
+name: "cluster_AT"
+nodes:
+{% for controller_ip in controller_cluster_ips %}
+  - ip:
+      type: V4
+      addr: {{ controller_ip }}
+    name: {{ controller_ip }}
+{% endfor %}

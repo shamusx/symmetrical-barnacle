@@ -4,7 +4,6 @@
     password: "{{ lookup('env', 'AVI_PASSWORD') }}"
     old_password: "{{ lookup('env', 'AVI_OLDPASSWORD') }}"
   name: "Change Default Password"
-
 - avi_systemconfiguration:
     avi_credentials: "{{ avi_credentials }}"
     dns_configuration:
@@ -24,3 +23,10 @@
         - addr: 3.pool.ntp.org
           type: DNS
   name: Basic system configuration
+- set_fact:
+    avi_cluster_config: "{{ lookup('template', '../templates/cluster.j2')|from_yaml }}"
+  when: deploy_controllers > 1
+  name: Build Cluster Config
+- avi_cluster: "{{ avi_cluster_config }}"
+  when: deploy_controllers > 1
+  name: Apply Cluster Config

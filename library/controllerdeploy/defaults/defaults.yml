@@ -4,3 +4,4 @@ build_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+\\/+?', '\\1') }
 avi_api_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+-.*\\/+?', '\\1') }}"
 #  last_octet: "{{ controller_mgmt.split('.')[3:4] | join('.') }}"
 loop_controller: 0
+controller_cluster_ips: []
