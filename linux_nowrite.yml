@@ -4,7 +4,7 @@
     - avinetworks.avisdk
   vars:
     vtype: CLOUD_NONE
-    last_octet: "{{ controller_mgmt_ip..split('.')[-1][-2:] }}"
+    last_octet: "{{ controller_mgmt.split('.')[-1][-2:] }}"
   tasks:
   - include_tasks: library/linux_nowrite/tasks/linux_nowrite.yml
     name: "{{ 'Deploy No Write Cloud: ' + build_version }}"
@@ -26,7 +26,7 @@
       name: "Verify Docker is started and enabled"
   roles:
     - role: avinetworks.avise
-      se_master_ctl_ip: "{{ controller_mgmt_ip }}"
+      se_master_ctl_ip: "{{ controller_mgmt }}"
       se_master_ctl_username: "{{ lookup('env', 'ANSIBLE_NET_USERNAME') }}"
       se_master_ctl_password: "{{ lookup('env', 'ANSIBLE_NET_PASSWORD') }}"
       se_inband_mgmt: false
