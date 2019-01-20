@@ -27,3 +27,4 @@
 - set_fact:
     controller_cluster_ips: "{{ controller_cluster_ips }} + [' {{ controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller|int) }} ']"
 - set_fact: loop_controller={{ loop_controller | int + 1 }}
+  when: deploy_controllers > 1

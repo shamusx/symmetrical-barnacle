@@ -4,6 +4,7 @@
     - avinetworks.avisdk
   vars:
     vtype: CLOUD_LINUXSERVER
+    last_octet: "{{ controller_mgmt_ip..split('.')[-1][-2:] }}"
   tasks:
   - include_tasks: library/linux_write/tasks/linux_write.yml
     name: "{{ 'Deploy Baremetal Write Cloud: ' + build_version }}"

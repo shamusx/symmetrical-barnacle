@@ -10,3 +10,7 @@
     name: Deploy AviControllers VMWare
   - include_tasks: library/controllerdeploy/tasks/controller_init.yml
     name: Configure default settings on controller
+  - set_stats:
+      data:
+        controller_mgmt: "{{ controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller|int) }}"
+    when: deploy_controllers > 1
