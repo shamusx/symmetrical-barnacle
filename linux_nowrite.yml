@@ -4,7 +4,6 @@
     - avinetworks.avisdk
   vars:
     vtype: CLOUD_NONE
-    last_octet: "{{ controller_mgmt.split('.')[3:4] | join('.')  }}"
   tasks:
   - include_tasks: library/linux_nowrite/tasks/linux_nowrite.yml
     name: "{{ 'Deploy No Write Cloud: ' + build_version }}"
