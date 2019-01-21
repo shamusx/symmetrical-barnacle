@@ -30,3 +30,13 @@
 - avi_cluster: "{{ avi_cluster_config }}"
   when: deploy_controllers > 1
   name: Apply Cluster Config
+- uri:
+    validate_certs: False
+    url: "{{ 'https://' + controller_mgmt_ip | ipaddr('address') | ipmath(loop_controller|int) + '/api/cluster/status'}}"
+    method: GET
+    status_code: 200
+  register: status_code
+  until: status_code.status == 200
+  retries: 10
+  delay: 60
+name: Verify Controller/Cluster is online
