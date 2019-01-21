@@ -1,5 +1,6 @@
 - connection: local
-  hosts: localhost'
+  hosts: localhost
+  gather_facts: no
   vars:
     octet_parse:  "{{ controller_mgmt_ip | ipaddr('address') }}"
   tasks:
