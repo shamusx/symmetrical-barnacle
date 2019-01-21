@@ -8,4 +8,4 @@
         avi_api_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+-.*\\/+?', '\\1') }}"
   - set_stats:
       data:
-        last_octet: "{{ data.controller_mgmt.split('.')[3:4] | join('.')  }}"
+        last_octet: "{{ data['controller_mgmt'].split('.')[3:4] | join('.')  }}"
