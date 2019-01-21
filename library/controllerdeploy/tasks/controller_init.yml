@@ -39,4 +39,4 @@
   until: status_code.status == 200
   retries: 10
   delay: 60
-name: Verify Controller/Cluster is online
+  name: Verify Controller/Cluster is online
