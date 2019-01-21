@@ -1,11 +1,11 @@
 - connection: local
-  hosts: localhost
+  hosts: localhost'
+  vars:
+    octet_parse:  "{{ controller_mgmt_ip | ipaddr('address') }}"
   tasks:
   - set_stats:
       data:
         controller_mgmt: "{{ controller_mgmt_ip | ipaddr('address') }}"
         build_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+\\/+?', '\\1') }}"
         avi_api_version: "{{ ova_path | regex_replace('^.*build-([0-9].*)+-.*\\/+?', '\\1') }}"
-  - set_stats:
-      data:
-        last_octet: "{{ data['controller_mgmt'].split('.')[3:4] | join('.')  }}"
+        last_octet: "{{ octet_parse.split('.')[3:4] | join('.')  }}"
